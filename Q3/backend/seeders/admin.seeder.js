@@ -9,7 +9,7 @@ const seedAdmin = async () => {
      ON CONFLICT (email) DO UPDATE SET password = $3`,
     ['Admin', 'admin@q3.com', hashed, 'admin']
   );
-  console.log('Admin seeded');
+  console.log('Admin seeded successfully');
   process.exit();
 };
 
