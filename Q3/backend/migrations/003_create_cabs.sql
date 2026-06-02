@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS cabs (
+  id SERIAL PRIMARY KEY,
+  cab_number VARCHAR(20) UNIQUE NOT NULL,
+  model VARCHAR(100) NOT NULL,
+  driver_id INTEGER REFERENCES drivers(id) ON DELETE SET NULL,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT NOW()
+);
