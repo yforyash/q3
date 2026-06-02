@@ -1,11 +1,11 @@
-const md5 = require('md5');
+const CryptoJS = require('crypto-js');
 
 const hashPassword = (password) => {
-  return md5(password);
+  return CryptoJS.SHA256(password).toString();
 };
 
 const comparePassword = (password, hash) => {
-  return md5(password) === hash;
+  return CryptoJS.SHA256(password).toString() === hash;
 };
 
 module.exports = { hashPassword, comparePassword };
