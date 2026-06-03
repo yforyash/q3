@@ -10,33 +10,37 @@ const navItems = [
   { name: 'Location Management', path: '/locations', key: 'locations' },
 ];
 
+const parseUser = () => {
+  try {
+    return JSON.parse(localStorage.getItem('user'));
+  } catch {
+    return null;
+  }
+};
+
 const Sidebar = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = parseUser();
   const role = user?.role;
   const allowed = permissions[role] || [];
 
   return (
-    <div style={{ width: '220px', background: '#16213e', color: 'white', height: '100vh', paddingTop: '20px' }}>
-      <div style={{ padding: '15px 20px', fontSize: '20px', fontWeight: 'bold', borderBottom: '1px solid #0f3460', marginBottom: '10px' }}>
-        Menu
+    <aside className="sidebar">
+      <div className="sidebar-brand">
+        <h1>Q3 Admin</h1>
+        <p>Fleet control center</p>
       </div>
-      {navItems.filter(item => allowed.includes(item.key)).map(item => (
-        <NavLink
-          key={item.key}
-          to={item.path}
-          style={({ isActive }) => ({
-            display: 'block',
-            padding: '12px 20px',
-            color: isActive ? '#e94560' : 'white',
-            textDecoration: 'none',
-            background: isActive ? '#0f3460' : 'transparent',
-            borderLeft: isActive ? '4px solid #e94560' : '4px solid transparent',
-          })}
-        >
-          {item.name}
-        </NavLink>
-      ))}
-    </div>
+      <nav className="sidebar-nav">
+        {navItems.filter(item => allowed.includes(item.key)).map(item => (
+          <NavLink
+            key={item.key}
+            to={item.path}
+            className={({ isActive }) => isActive ? 'sidebar-link active' : 'sidebar-link'}
+          >
+            {item.name}
+          </NavLink>
+        ))}
+      </nav>
+    </aside>
   );
 };
 

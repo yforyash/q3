@@ -1,9 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const parseUser = () => {
+  try {
+    return JSON.parse(localStorage.getItem('user'));
+  } catch {
+    return null;
+  }
+};
+
 const Navbar = () => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = parseUser();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -12,11 +20,17 @@ const Navbar = () => {
   };
 
   return (
-    <div style={{ background: '#1a1a2e', color: 'white', padding: '15px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <h2 style={{ margin: 0 }}>Q3 Admin</h2>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-        <span>Welcome, {user?.name} ({user?.role})</span>
-        <button onClick={handleLogout} style={{ background: '#e94560', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '5px', cursor: 'pointer' }}>
+    <div className="topbar">
+      <div>
+        <h2>Q3 Management</h2>
+        <p>Secure fleet and user admin portal</p>
+      </div>
+      <div className="profile-chip">
+        <div>
+          <strong>{user?.name || 'Guest'}</strong>
+          <span>{user?.role ? user.role.toUpperCase() : 'Not signed in'}</span>
+        </div>
+        <button className="btn btn-secondary" onClick={handleLogout}>
           Logout
         </button>
       </div>

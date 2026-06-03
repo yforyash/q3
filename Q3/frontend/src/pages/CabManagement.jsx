@@ -5,6 +5,7 @@ const CabManagement = () => {
   const [cabs, setCabs] = useState([]);
   const [form, setForm] = useState({ cab_number: '', model: '', driver_id: '' });
   const [editId, setEditId] = useState(null);
+  const [search, setSearch] = useState('');
 
   const fetchCabs = async () => {
     const res = await getCabs();
@@ -35,45 +36,133 @@ const CabManagement = () => {
     fetchCabs();
   };
 
+  const filteredCabs = cabs.filter((cab) => {
+    const term = search.toLowerCase();
+    return (
+      String(cab.id).includes(term) ||
+      cab.cab_number?.toLowerCase().includes(term) ||
+      cab.model?.toLowerCase().includes(term) ||
+      String(cab.driver_id).includes(term)
+    );
+  });
+
   return (
     <div>
-      <h2>Cab Management</h2>
-      <form onSubmit={handleSubmit} style={{ background: 'white', padding: '20px', borderRadius: '10px', marginBottom: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-        <input placeholder='Cab Number' value={form.cab_number} onChange={e => setForm({ ...form, cab_number: e.target.value })} required style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }} />
-        <input placeholder='Model' value={form.model} onChange={e => setForm({ ...form, model: e.target.value })} required style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }} />
-        <input placeholder='Driver ID' value={form.driver_id} onChange={e => setForm({ ...form, driver_id: e.target.value })} style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }} />
-        <button type='submit' style={{ padding: '8px 20px', background: '#e94560', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-          {editId ? 'Update' : 'Add Cab'}
-        </button>
-        {editId && <button onClick={() => { setEditId(null); setForm({ cab_number: '', model: '', driver_id: '' }); }} style={{ padding: '8px 20px', background: '#ccc', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Cancel</button>}
-      </form>
-      <table style={{ width: '100%', background: 'white', borderRadius: '10px', borderCollapse: 'collapse', overflow: 'hidden' }}>
-        <thead style={{ background: '#1a1a2e', color: 'white' }}>
-          <tr>
-            <th style={{ padding: '12px' }}>ID</th>
-            <th style={{ padding: '12px' }}>Cab Number</th>
-            <th style={{ padding: '12px' }}>Model</th>
-            <th style={{ padding: '12px' }}>Driver</th>
-            <th style={{ padding: '12px' }}>Active</th>
-            <th style={{ padding: '12px' }}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cabs.map(cab => (
-            <tr key={cab.id} style={{ borderBottom: '1px solid #eee', textAlign: 'center' }}>
-              <td style={{ padding: '12px' }}>{cab.id}</td>
-              <td style={{ padding: '12px' }}>{cab.cab_number}</td>
-              <td style={{ padding: '12px' }}>{cab.model}</td>
-              <td style={{ padding: '12px' }}>{cab.driver_name || 'Unassigned'}</td>
-              <td style={{ padding: '12px' }}>{cab.is_active ? 'Yes' : 'No'}</td>
-              <td style={{ padding: '12px', display: 'flex', gap: '5px', justifyContent: 'center' }}>
-                <button onClick={() => handleEdit(cab)} style={{ padding: '5px 10px', background: '#1a1a2e', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Edit</button>
-                <button onClick={() => handleDelete(cab.id)} style={{ padding: '5px 10px', background: '#e94560', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="page-title">
+        <div>
+          <h2>Cab Management</h2>
+          <p>Organize cabs, assignments, and fleet availability.</p>
+        </div>
+      </div>
+      <div className="form-card">
+        <div className="card-header">
+          <div>
+            <h3>{editId ? 'Edit cab' : 'Add a new cab'}</h3>
+            <p style={{ color: 'var(--muted)', margin: 0 }}>
+              {editId ? 'Update cab details.' : 'Register a new cab for fleet operations.'}
+            </p>
+          </div>
+          <input
+            className="filter-input"
+            placeholder="Search cabs..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <form onSubmit={handleSubmit} className="form-grid">
+          <div className="field-group">
+            <label>Cab Number</label>
+            <input
+              placeholder="Cab Number"
+              value={form.cab_number}
+              onChange={(e) => setForm({ ...form, cab_number: e.target.value })}
+              required
+            />
+          </div>
+          <div className="field-group">
+            <label>Model</label>
+            <input
+              placeholder="Model"
+              value={form.model}
+              onChange={(e) => setForm({ ...form, model: e.target.value })}
+              required
+            />
+          </div>
+          <div className="field-group">
+            <label>Driver ID</label>
+            <input
+              placeholder="Driver ID"
+              value={form.driver_id}
+              onChange={(e) => setForm({ ...form, driver_id: e.target.value })}
+            />
+          </div>
+          <div className="table-actions">
+            <button type="submit" className="btn btn-primary">
+              {editId ? 'Update cab' : 'Add cab'}
+            </button>
+            {editId && (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => {
+                  setEditId(null);
+                  setForm({ cab_number: '', model: '', driver_id: '' });
+                }}
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+
+      <div className="table-card" style={{ marginTop: '20px' }}>
+        <div className="card-header">
+          <div>
+            <h3>Cab inventory</h3>
+            <p style={{ color: 'var(--muted)', margin: 0 }}>
+              Showing {filteredCabs.length} of {cabs.length} cabs.
+            </p>
+          </div>
+        </div>
+        <div style={{ overflowX: 'auto' }}>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Cab Number</th>
+                <th>Model</th>
+                <th>Driver</th>
+                <th>Active</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredCabs.map((cab) => (
+                <tr key={cab.id}>
+                  <td>{cab.id}</td>
+                  <td>{cab.cab_number}</td>
+                  <td>{cab.model}</td>
+                  <td>{cab.driver_name || 'Unassigned'}</td>
+                  <td>
+                    <span className={`status-pill ${cab.is_active ? 'success' : 'danger'}`}>
+                      {cab.is_active ? 'Yes' : 'No'}
+                    </span>
+                  </td>
+                  <td className="table-actions">
+                    <button type="button" className="btn btn-secondary" onClick={() => handleEdit(cab)}>
+                      Edit
+                    </button>
+                    <button type="button" className="btn btn-danger" onClick={() => handleDelete(cab.id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

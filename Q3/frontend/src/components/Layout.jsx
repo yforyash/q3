@@ -5,13 +5,13 @@ import Navbar from './Navbar';
 
 const Layout = () => {
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
+    <div className="app-shell">
       <Sidebar />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div className="main-content">
         <Navbar />
-        <div style={{ padding: '20px', flex: 1, overflowY: 'auto', background: '#f5f5f5' }}>
+        <main className="page-container">
           <Outlet />
-        </div>
+        </main>
       </div>
     </div>
   );

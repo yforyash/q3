@@ -21,22 +21,31 @@ const Login = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#1a1a2e' }}>
-      <div style={{ background: 'white', padding: '40px', borderRadius: '10px', width: '350px' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '20px', color: '#1a1a2e' }}>Q3 Admin Login</h2>
-        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
-        <form onSubmit={handleLogin}>
-          <div style={{ marginBottom: '15px' }}>
+    <div className="login-page">
+      <div className="login-card">
+        <h2>Welcome back</h2>
+        <p>Login to manage users, drivers, cabs, and locations.</p>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleLogin} className="form-grid">
+          <div className="field-group">
             <label>Email</label>
-            <input type='email' value={email} onChange={e => setEmail(e.target.value)} required
-              style={{ width: '100%', padding: '10px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ccc', boxSizing: 'border-box' }} />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
-          <div style={{ marginBottom: '20px' }}>
+          <div className="field-group">
             <label>Password</label>
-            <input type='password' value={password} onChange={e => setPassword(e.target.value)} required
-              style={{ width: '100%', padding: '10px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ccc', boxSizing: 'border-box' }} />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
-          <button type='submit' style={{ width: '100%', padding: '10px', background: '#e94560', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '16px' }}>
+          <button type="submit" className="btn btn-primary">
             Login
           </button>
         </form>

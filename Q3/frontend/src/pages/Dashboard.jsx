@@ -1,23 +1,36 @@
 import React from 'react';
 
+const parseUser = () => {
+  try {
+    return JSON.parse(localStorage.getItem('user'));
+  } catch {
+    return null;
+  }
+};
+
 const Dashboard = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = parseUser();
 
   return (
     <div>
-      <h2>Welcome to Dashboard</h2>
-      <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
-        <div style={{ background: 'white', padding: '20px', borderRadius: '10px', flex: 1, textAlign: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
+      <div className="page-title">
+        <div>
+          <h2>Welcome back, {user?.name || 'Admin'}</h2>
+          <p>Keep an eye on user access, assignments, and fleet activity.</p>
+        </div>
+      </div>
+      <div className="panel-grid">
+        <div className="panel-card">
           <h3>Role</h3>
-          <p style={{ fontSize: '24px', color: '#e94560', textTransform: 'capitalize' }}>{user?.role}</p>
+          <p className="value">{user?.role || 'N/A'}</p>
         </div>
-        <div style={{ background: 'white', padding: '20px', borderRadius: '10px', flex: 1, textAlign: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
+        <div className="panel-card">
           <h3>Name</h3>
-          <p style={{ fontSize: '24px', color: '#1a1a2e' }}>{user?.name}</p>
+          <p className="value">{user?.name || 'Unknown'}</p>
         </div>
-        <div style={{ background: 'white', padding: '20px', borderRadius: '10px', flex: 1, textAlign: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
+        <div className="panel-card">
           <h3>Email</h3>
-          <p style={{ fontSize: '24px', color: '#1a1a2e' }}>{user?.email}</p>
+          <p className="value">{user?.email || 'No email'}</p>
         </div>
       </div>
     </div>
