@@ -3,3 +3,10 @@
 node_modules/
 .cache/
 frontend/node_modules/.cache/
+Q3_Project.zip
+frontend/Q3_Project.zip
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+node_modules/
+*.zip
