@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS drivers (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-  license_number VARCHAR(50) UNIQUE NOT NULL,
-  phone VARCHAR(20) NOT NULL,
-  is_available BOOLEAN DEFAULT true,
-  created_at TIMESTAMP DEFAULT NOW()
-);
