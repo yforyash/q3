@@ -1,28 +1,40 @@
-const pool = require('../config/db');
+let locations = [];
 
 const findAll = async () => {
-  const result = await pool.query('SELECT * FROM locations');
-  return result.rows;
+  return locations;
 };
 
 const createLocation = async (name, latitude, longitude) => {
-  const result = await pool.query(
-    'INSERT INTO locations (name, latitude, longitude) VALUES ($1, $2, $3) RETURNING *',
-    [name, latitude, longitude]
-  );
-  return result.rows[0];
+  const newLocation = {
+    id: Date.now(),
+    name,
+    latitude,
+    longitude,
+  };
+
+  locations.push(newLocation);
+  return newLocation;
 };
 
 const updateLocation = async (id, name, latitude, longitude) => {
-  const result = await pool.query(
-    'UPDATE locations SET name = $1, latitude = $2, longitude = $3 WHERE id = $4 RETURNING *',
-    [name, latitude, longitude, id]
-  );
-  return result.rows[0];
+  const loc = locations.find(l => l.id == id);
+
+  if (!loc) return null;
+
+  loc.name = name;
+  loc.latitude = latitude;
+  loc.longitude = longitude;
+
+  return loc;
 };
 
 const deleteLocation = async (id) => {
-  await pool.query('DELETE FROM locations WHERE id = $1', [id]);
+  locations = locations.filter(l => l.id != id);
 };
 
-module.exports = { findAll, createLocation, updateLocation, deleteLocation };
+module.exports = {
+  findAll,
+  createLocation,
+  updateLocation,
+  deleteLocation
+};

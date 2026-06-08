@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { getAllDrivers, createDriver, updateDriver, deleteDriver } = require('../controllers/driver.controller');
+const {
+  getAllDrivers,
+  createDriver,
+  updateDriver,
+  deleteDriver,
+} = require('../controllers/driver.controller');
 const { authenticate } = require('../middlewares/auth.middleware');
 const { authorize } = require('../middlewares/rbac.middleware');
 
@@ -15,10 +20,13 @@ const { authorize } = require('../middlewares/rbac.middleware');
  *     responses:
  *       200:
  *         description: List of drivers
- *       403:
- *         description: Access denied
  */
-router.get('/', authenticate, authorize('admin', 'subadmin'), getAllDrivers);
+router.get(
+  '/',
+  authenticate,
+  authorize('admin', 'subadmin'),
+  getAllDrivers
+);
 
 /**
  * @swagger
@@ -34,23 +42,24 @@ router.get('/', authenticate, authorize('admin', 'subadmin'), getAllDrivers);
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [user_id, license_number, phone]
  *             properties:
  *               user_id:
  *                 type: integer
- *                 example: 2
  *               license_number:
  *                 type: string
- *                 example: DL1234567890
  *               phone:
  *                 type: string
- *                 example: 9876543210
  *     responses:
  *       201:
  *         description: Driver created
- *       400:
- *         description: Bad request
  */
-router.post('/', authenticate, authorize('admin', 'subadmin'), createDriver);
+router.post(
+  '/',
+  authenticate,
+  authorize('admin', 'subadmin'),
+  createDriver
+);
 
 /**
  * @swagger
@@ -75,18 +84,20 @@ router.post('/', authenticate, authorize('admin', 'subadmin'), createDriver);
  *             properties:
  *               license_number:
  *                 type: string
- *                 example: DL1234567890
  *               phone:
  *                 type: string
- *                 example: 9876543210
  *               is_available:
  *                 type: boolean
- *                 example: true
  *     responses:
  *       200:
  *         description: Driver updated
  */
-router.put('/:id', authenticate, authorize('admin', 'subadmin'), updateDriver);
+router.put(
+  '/:id',
+  authenticate,
+  authorize('admin', 'subadmin'),
+  updateDriver
+);
 
 /**
  * @swagger
@@ -105,9 +116,12 @@ router.put('/:id', authenticate, authorize('admin', 'subadmin'), updateDriver);
  *     responses:
  *       200:
  *         description: Driver deleted
- *       403:
- *         description: Access denied
  */
-router.delete('/:id', authenticate, authorize('admin'), deleteDriver);
+router.delete(
+  '/:id',
+  authenticate,
+  authorize('admin'),
+  deleteDriver
+);
 
 module.exports = router;

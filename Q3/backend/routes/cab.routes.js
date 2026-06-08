@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { getAllCabs, createCab, updateCab, deleteCab } = require('../controllers/cab.controller');
+const {
+  getAllCabs,
+  createCab,
+  updateCab,
+  deleteCab,
+} = require('../controllers/cab.controller');
 const { authenticate } = require('../middlewares/auth.middleware');
 const { authorize } = require('../middlewares/rbac.middleware');
 
@@ -16,7 +21,12 @@ const { authorize } = require('../middlewares/rbac.middleware');
  *       200:
  *         description: List of cabs
  */
-router.get('/', authenticate, authorize('admin', 'subadmin', 'employee', 'driver'), getAllCabs);
+router.get(
+  '/',
+  authenticate,
+  authorize('admin', 'subadmin', 'employee', 'driver'),
+  getAllCabs
+);
 
 /**
  * @swagger
@@ -32,21 +42,24 @@ router.get('/', authenticate, authorize('admin', 'subadmin', 'employee', 'driver
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [cab_number, model]
  *             properties:
  *               cab_number:
  *                 type: string
- *                 example: DL01AB1234
  *               model:
  *                 type: string
- *                 example: Swift Dzire
  *               driver_id:
  *                 type: integer
- *                 example: 1
  *     responses:
  *       201:
  *         description: Cab created
  */
-router.post('/', authenticate, authorize('admin', 'subadmin'), createCab);
+router.post(
+  '/',
+  authenticate,
+  authorize('admin', 'subadmin'),
+  createCab
+);
 
 /**
  * @swagger
@@ -71,21 +84,22 @@ router.post('/', authenticate, authorize('admin', 'subadmin'), createCab);
  *             properties:
  *               cab_number:
  *                 type: string
- *                 example: DL01AB1234
  *               model:
  *                 type: string
- *                 example: Swift Dzire
  *               driver_id:
  *                 type: integer
- *                 example: 1
  *               is_active:
  *                 type: boolean
- *                 example: true
  *     responses:
  *       200:
  *         description: Cab updated
  */
-router.put('/:id', authenticate, authorize('admin', 'subadmin'), updateCab);
+router.put(
+  '/:id',
+  authenticate,
+  authorize('admin', 'subadmin'),
+  updateCab
+);
 
 /**
  * @swagger
@@ -105,6 +119,11 @@ router.put('/:id', authenticate, authorize('admin', 'subadmin'), updateCab);
  *       200:
  *         description: Cab deleted
  */
-router.delete('/:id', authenticate, authorize('admin'), deleteCab);
+router.delete(
+  '/:id',
+  authenticate,
+  authorize('admin'),
+  deleteCab
+);
 
 module.exports = router;

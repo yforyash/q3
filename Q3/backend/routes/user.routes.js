@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { getAllUsers, createUser, updateUser, deleteUser } = require('../controllers/user.controller');
+const {
+  getAllUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+} = require('../controllers/user.controller');
 const { authenticate } = require('../middlewares/auth.middleware');
 const { authorize } = require('../middlewares/rbac.middleware');
 
@@ -20,7 +25,12 @@ const { authorize } = require('../middlewares/rbac.middleware');
  *       403:
  *         description: Access denied
  */
-router.get('/', authenticate, authorize('admin', 'subadmin'), getAllUsers);
+router.get(
+  '/',
+  authenticate,
+  authorize('admin', 'subadmin'),
+  getAllUsers
+);
 
 /**
  * @swagger
@@ -36,26 +46,27 @@ router.get('/', authenticate, authorize('admin', 'subadmin'), getAllUsers);
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [name, email, password, role]
  *             properties:
  *               name:
  *                 type: string
- *                 example: John Doe
  *               email:
  *                 type: string
- *                 example: john@q3.com
  *               password:
  *                 type: string
- *                 example: john123
  *               role:
  *                 type: string
- *                 example: employee
+ *                 enum: [admin, subadmin, employee, driver]
  *     responses:
  *       201:
  *         description: User created
- *       400:
- *         description: Bad request
  */
-router.post('/', authenticate, authorize('admin', 'subadmin'), createUser);
+router.post(
+  '/',
+  authenticate,
+  authorize('admin', 'subadmin'),
+  createUser
+);
 
 /**
  * @swagger
@@ -80,20 +91,20 @@ router.post('/', authenticate, authorize('admin', 'subadmin'), createUser);
  *             properties:
  *               name:
  *                 type: string
- *                 example: John Updated
  *               role:
  *                 type: string
- *                 example: subadmin
  *               is_active:
  *                 type: boolean
- *                 example: true
  *     responses:
  *       200:
  *         description: User updated
- *       400:
- *         description: Bad request
  */
-router.put('/:id', authenticate, authorize('admin', 'subadmin'), updateUser);
+router.put(
+  '/:id',
+  authenticate,
+  authorize('admin', 'subadmin'),
+  updateUser
+);
 
 /**
  * @swagger
@@ -112,9 +123,12 @@ router.put('/:id', authenticate, authorize('admin', 'subadmin'), updateUser);
  *     responses:
  *       200:
  *         description: User deleted
- *       403:
- *         description: Access denied
  */
-router.delete('/:id', authenticate, authorize('admin'), deleteUser);
+router.delete(
+  '/:id',
+  authenticate,
+  authorize('admin'),
+  deleteUser
+);
 
 module.exports = router;

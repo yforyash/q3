@@ -1,15 +1,50 @@
-const { findAll, createUser, updateUser, deleteUser } = require('../models/user.model');
+const {
+  findAll,
+  createUser,
+  updateUser,
+  deleteUser,
+  emailExists
+} = require('../models/user.model');
+
 const { hashPassword } = require('../utils/hash.utils');
 
-const getUsers = async () => await findAll();
-
-const addUser = async (name, email, password, role) => {
-  const hashed = hashPassword(password);
-  return await createUser(name, email, hashed, role);
+const getUsers = async () => {
+  return await findAll();
 };
 
-const editUser = async (id, name, role, is_active) => await updateUser(id, name, role, is_active);
+const addUser = async (name, email, password, role) => {
+  const exists = await emailExists(email);
 
-const removeUser = async (id) => await deleteUser(id);
+  if (exists) {
+    throw new Error('Email already registered');
+  }
 
-module.exports = { getUsers, addUser, editUser, removeUser };
+  const hashedPassword = hashPassword(password);
+
+  return await createUser(
+    name,
+    email,
+    hashedPassword,
+    role || 'user'
+  );
+};
+
+const editUser = async (id, name, role, is_active) => {
+  return await updateUser(
+    id,
+    name,
+    role,
+    is_active
+  );
+};
+
+const removeUser = async (id) => {
+  return await deleteUser(id);
+};
+
+module.exports = {
+  getUsers,
+  addUser,
+  editUser,
+  removeUser
+};

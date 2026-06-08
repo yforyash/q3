@@ -1,17 +1,19 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
 import Navbar from './Navbar';
+import Sidebar from './Sidebar';
 
 const Layout = () => {
   return (
-    <div className="app-shell">
+    <div style={{ display: 'flex' }}>
       <Sidebar />
-      <div className="main-content">
+
+      <div style={{ flex: 1 }}>
         <Navbar />
-        <main className="page-container">
+
+        <div style={{ padding: '20px' }}>
           <Outlet />
-        </main>
+        </div>
       </div>
     </div>
   );
