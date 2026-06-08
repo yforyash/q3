@@ -1,0 +1,9 @@
+*.zip
+Q3_Project.zip
+**/Q3_Project.zip
+dist/
+build/
+node_modules/
+.env
+*.log
+.DS_Store
